@@ -1,0 +1,109 @@
+services:
+  coordinator-server:
+    image: fluss/fluss:0.6.0
+    command: coordinatorServer
+    ports:
+      - "9123:9123"
+    depends_on:
+      - zookeeper
+    environment:
+      - |
+        FLUSS_PROPERTIES=
+        zookeeper.address: zookeeper:2181
+        coordinator.host: coordinator-server
+        remote.data.dir: /tmp/fluss/remote-data
+        datalake.format: paimon
+        datalake.paimon.metastore: filesystem
+        datalake.paimon.warehouse: /tmp/paimon
+  tablet-server-0:
+    image: fluss/fluss:0.6.0
+    command: tabletServer
+    depends_on:
+      - coordinator-server
+    environment:
+      - |
+        FLUSS_PROPERTIES=
+        zookeeper.address: zookeeper:2181
+        tablet-server.host: tablet-server-0
+        tablet-server.id: 0
+        data.dir: /tmp/fluss/data/tablet-server-0
+        remote.data.dir: /tmp/fluss/remote-data
+        kv.snapshot.interval: 0s
+        datalake.format: paimon
+        datalake.paimon.metastore: filesystem
+        datalake.paimon.warehouse: /tmp/paimon
+    volumes:
+      - ./logs/fluss:/tmp/fluss
+  tablet-server-1:
+    image: fluss/fluss:0.6.0
+    command: tabletServer
+    depends_on:
+      - coordinator-server
+    environment:
+      - |
+        FLUSS_PROPERTIES=
+        zookeeper.address: zookeeper:2181
+        tablet-server.host: tablet-server-1
+        tablet-server.id: 1
+        data.dir: /tmp/fluss/data/tablet-server-1
+        remote.data.dir: /tmp/fluss/remote-data
+        kv.snapshot.interval: 0s
+        datalake.format: paimon
+        datalake.paimon.metastore: filesystem
+        datalake.paimon.warehouse: /tmp/paimon
+    volumes:
+      - ./logs/fluss:/tmp/fluss
+  tablet-server-2:
+    image: fluss/fluss:0.6.0
+    command: tabletServer
+    depends_on:
+      - coordinator-server
+    environment:
+      - |
+        FLUSS_PROPERTIES=
+        zookeeper.address: zookeeper:2181
+        tablet-server.host: tablet-server-2
+        tablet-server.id: 2
+        data.dir: /tmp/fluss/data/tablet-server-2
+        remote.data.dir: /tmp/fluss/remote-data
+        kv.snapshot.interval: 0s
+        datalake.format: paimon
+        datalake.paimon.metastore: filesystem
+        datalake.paimon.warehouse: /tmp/paimon
+    volumes:
+      - ./logs/fluss:/tmp/fluss
+  zookeeper:
+    restart: always
+    image: zookeeper:3.9.2
+    ports:
+      - "2181:2181"
+
+  jobmanager:
+    build: .
+    container_name: jobmanager
+    ports:
+      - "8083:8081"
+    command: jobmanager
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        jobmanager.memory.process.size: 2048m
+        parallelism.default: 3
+    volumes:
+      - ./logs/paimon:/tmp/paimon
+  taskmanager:
+    build: .
+    container_name: taskmanager
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        taskmanager.numberOfTaskSlots: 10
+        taskmanager.memory.process.size: 4096m
+        taskmanager.memory.framework.off-heap.size: 256m
+    volumes:
+      - ./logs/paimon:/tmp/paimon
