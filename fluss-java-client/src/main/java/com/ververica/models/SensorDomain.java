@@ -22,4 +22,17 @@ public class SensorDomain {
             String state,
             LocalDateTime lastUpdated
     ) {}
+
+    public record SensorReadingEnriched(
+            int sensorId,
+            LocalDateTime timestamp,
+            double temperature,
+            double humidity,
+            double pressure,
+            double batteryLevel,
+            String name,
+            String type,
+            String location,
+            String state
+    ) {}
 }

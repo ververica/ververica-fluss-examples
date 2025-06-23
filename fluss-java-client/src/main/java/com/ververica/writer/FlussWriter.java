@@ -10,7 +10,6 @@ import com.alibaba.fluss.metadata.DatabaseInfo;
 import com.alibaba.fluss.row.BinaryString;
 import com.alibaba.fluss.row.GenericRow;
 import com.alibaba.fluss.row.TimestampNtz;
-import com.ververica.models.SensorDomain;
 import com.ververica.utils.AppUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import com.ververica.models.SensorDomain.SensorInfo;
 import com.ververica.models.SensorDomain.SensorReading;
 
-import java.sql.Timestamp;
 import java.util.concurrent.ExecutionException;
 
 public class FlussWriter {
@@ -100,10 +98,9 @@ public class FlussWriter {
         row.setField(1, BinaryString.fromString(sensorInfo.name()));
         row.setField(2, BinaryString.fromString(sensorInfo.type()));
         row.setField(3, BinaryString.fromString(sensorInfo.location()));
-        row.setField(4, sensorInfo.installationDate());
+        row.setField(4, (int) sensorInfo.installationDate().toEpochDay());
         row.setField(5, BinaryString.fromString(sensorInfo.state()));
         row.setField(6, TimestampNtz.fromLocalDateTime(sensorInfo.lastUpdated()));
-        System.out.println(row);
         return row;
     }
 }

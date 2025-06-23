@@ -83,8 +83,8 @@ public class AppUtils {
 
     public static Schema getSensorInfoSchema() {
         return Schema.newBuilder()
-                .column("sensorId", DataTypes.STRING())
-                .column("name", DataTypes.INT())
+                .column("sensorId", DataTypes.INT())
+                .column("name", DataTypes.STRING())
                 .column("type", DataTypes.STRING())
                 .column("location", DataTypes.STRING())
                 .column("installationDate", DataTypes.DATE())
@@ -101,6 +101,9 @@ public class AppUtils {
                 .comment("This is the sensor readings table")
                 .build();
 
+        admin.dropTable(readingsTablePath, true).get();
+        admin.dropTable(sensorInfoTablePath, true).get();
+
         admin.createTable(readingsTablePath, readingsDescriptor, true).get();
 
         TableDescriptor sensorInfoDescriptor = TableDescriptor.builder()
@@ -108,7 +111,6 @@ public class AppUtils {
                 .distributedBy(3, "sensorId")
                 .comment("This is the sensor information table")
                 .build();
-
 
         admin.createTable(sensorInfoTablePath, sensorInfoDescriptor, true).get();
     }
