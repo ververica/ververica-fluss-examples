@@ -19,21 +19,6 @@ CREATE TABLE player_profiles (
     'fields.country.expression' = '#{Address.country}'
 );
 
-SELECT * FROM player_profiles LICREATE TABLE player_profiles (
-    player_id STRING,
-    username STRING,
-    email STRING,
-    signup_date TIMESTAMP(3),
-    country STRING
-) WITH (
-    'connector' = 'faker',
-    'fields.player_id.expression' = '#{regexify ''(PL)[0-9]{5}''}',
-    'fields.username.expression' = '#{name.username}',
-    'fields.email.expression' = '#{Internet.emailAddress}',
-    'fields.signup_date.expression' = '#{date.past ''1000'',''DAYS''}',
-    'fields.country.expression' = '#{Address.country}'
-    );
-
 SELECT * FROM player_profiles LIMIT 10;
 
 CREATE TABLE games (
@@ -46,42 +31,6 @@ CREATE TABLE games (
     'connector' = 'faker',
     'fields.game_id.expression' = '#{regexify ''(GM)[0-9]{5}''}',
     'fields.title.expression' = '#{GameOfThrones.house}',
-    'fields.genre.expression' = '#{regexify ''(Action|Adventure|Puzzle|Strategy|Simulation){1}''}',
-    'fields.release_date.expression' = '#{date.past ''1000'',''DAYS''}',
-    'fields.developer.expression' = '#{Company.name}'
-);
-
-SELECT * FROM games LIMIT 10;
-
-CREATE TABLE gameplay_events (
-    event_id STRING,
-    player_id STRING,
-    game_id STRING,
-    score INT,
-    event_time TIMESTAMP(3),
-    event_type STRING
-) WITH (
-    'connector' = 'faker',
-    'fields.event_id.expression' = '#{Internet.uuid}',
-    'fields.player_id.expression' = '#{regexify ''(PL)[0-9]{5}''}',
-    'fields.game_id.expression' = '#{regexify ''(GM)[0-9]{5}''}',
-    'fields.score.expression'     = '#{number.numberBetween ''0'',''5000''}',
-    'fields.event_time.expression' = '#{date.past ''30'',''SECONDS''}',
-    'fields.event_type.expression' = '#{regexify ''(start_session|end_session|achievement|level_up){1}''}'
-);
-
-SELECT * FROM gameplay_events LIMIT 10;
-
-CREATE TABLE games (
-    game_id STRING,
-    title STRING,
-    genre STRING,
-    release_date TIMESTAMP(3),
-    developer STRING
-) WITH (
-    'connector' = 'faker',
-    'fields.game_id.expression' = '#{regexify ''(GM)[0-9]{5}''}',
-    'fields.title.expression' = '#{GameOfThrones.house}', 
     'fields.genre.expression' = '#{regexify ''(Action|Adventure|Puzzle|Strategy|Simulation){1}''}',
     'fields.release_date.expression' = '#{date.past ''1000'',''DAYS''}',
     'fields.developer.expression' = '#{Company.name}'
@@ -126,7 +75,11 @@ CREATE TABLE player_profiles (
     signup_date TIMESTAMP(3),
     country STRING,
     PRIMARY KEY (player_id) NOT ENFORCED
-) WITH ('bucket.num' = '3', 'table.datalake.enabled' = 'true');
+) WITH (
+      'bucket.num' = '3',
+      'table.datalake.enabled' = 'true',
+      'table.datalake.freshness' = '30s'
+);
 
 INSERT INTO player_profiles SELECT * FROM default_catalog.default_database.player_profiles;
 
@@ -137,7 +90,11 @@ CREATE TABLE games (
     release_date TIMESTAMP(3),
     developer STRING,
     PRIMARY KEY (game_id) NOT ENFORCED
-) WITH ('bucket.num' = '3', 'table.datalake.enabled' = 'true');
+) WITH (
+      'bucket.num' = '3',
+      'table.datalake.enabled' = 'true',
+      'table.datalake.freshness' = '30s'
+);
 
 INSERT INTO games SELECT * FROM default_catalog.default_database.games;
 
@@ -150,7 +107,12 @@ CREATE TABLE gameplay_events (
     event_time TIMESTAMP(3),
     event_type STRING,
        WATERMARK FOR event_time AS event_time - INTERVAL '5' SECOND
-) WITH ('bucket.num' = '3', 'bucket.key' = 'player_id', 'table.datalake.enabled' = 'true');
+) WITH (
+    'bucket.num' = '3',
+    'bucket.key' = 'player_id',
+    'table.datalake.enabled' = 'true',
+    'table.datalake.freshness' = '30s'
+);
 
 INSERT INTO gameplay_events SELECT * FROM default_catalog.default_database.gameplay_events;
 ```
@@ -163,7 +125,11 @@ CREATE TABLE top3_leaderboard (
     max_score BIGINT,
     proc_time AS PROCTIME(),
     PRIMARY KEY (ranking, game_id) NOT ENFORCED
-) WITH ('bucket.num' = '3', 'table.datalake.enabled' = 'true');
+) WITH (
+      'bucket.num' = '3',
+      'table.datalake.enabled' = 'true',
+      'table.datalake.freshness' = '30s'
+);
 ```
 
 ```sql
@@ -198,7 +164,11 @@ CREATE TABLE top3_leaderboard_enriched (
     title STRING,
     genre STRING,
     PRIMARY KEY (game_id, ranking) NOT ENFORCED
-) WITH ('bucket.num' = '3', 'table.datalake.enabled' = 'true');
+) WITH (
+    'bucket.num' = '3', 
+    'table.datalake.enabled' = 'true',
+    'table.datalake.freshness' = '30s'
+);
 ```
 
 ```sql
@@ -224,6 +194,15 @@ FROM top3_leaderboard tl
 ./bin/lakehouse.sh -D flink.rest.address=jobmanager -D flink.rest.port=8081 -D flink.execution.checkpointing.interval=30s -D flink.parallelism.default=2
 ```
 
+```shell
+docker compose exec jobmanager \
+    /opt/flink/bin/flink run \
+    /opt/flink/opt/fluss-flink-tiering-0.7.0.jar \
+    --fluss.bootstrap.servers coordinator-server:9123 \
+    --datalake.format paimon \
+    --datalake.paimon.metastore filesystem \
+    --datalake.paimon.warehouse /tmp/paimon
+```
 ```sql
 SET 'execution.runtime-mode' = 'batch';
 SET 'table.display.max-column-width' = '100';
