@@ -1,0 +1,20 @@
+name: Self-Approve Action
+
+on:
+  pull_request:
+
+jobs:
+  self-approve-action:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Self-Approve Action
+        uses: nicklegan/github-repo-self-approve-action@v1.0.1
+        if: github.actor == 'polyzos'
+        with:
+          appid: ${{ secrets.SELF_AUTO_APPROVE_APP_ID }}
+          privatekey: ${{ secrets.SELF_AUTO_APPROVE_PRIVATE_KEY }}
+          installationid: ${{ secrets.SELF_AUTO_APPROVE_INSTALLATION_ID }}
