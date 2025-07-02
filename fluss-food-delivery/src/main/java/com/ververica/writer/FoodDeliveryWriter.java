@@ -34,13 +34,13 @@ public class FoodDeliveryWriter {
         Admin admin = connection.getAdmin();
 
 
-//        DatabaseDescriptor descriptor =
-//                DatabaseDescriptor.builder()
-//                        .comment("This is the food delivery database")
-//                        .customProperty("owner", "JE")
-//                        .build();
+        DatabaseDescriptor descriptor =
+                DatabaseDescriptor.builder()
+                        .comment("This is the food delivery database")
+                        .customProperty("owner", "JE")
+                        .build();
 
-//        admin.createDatabase(AppUtils.FOOD_DELIVERY_DB, descriptor, true).get();
+        admin.createDatabase(AppUtils.FOOD_DELIVERY_DB, descriptor, true).get();
         admin.listDatabases().get().forEach(System.out::println);
         logger.info("Tables in '{}' database:", AppUtils.FOOD_DELIVERY_DB);
         admin.listTables(AppUtils.FOOD_DELIVERY_DB).get()

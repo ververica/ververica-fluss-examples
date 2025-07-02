@@ -8,7 +8,7 @@ public class AppUtils {
 
     public static final String BOOTSTRAP_SERVERS = "localhost:9123";
 
-    public static final String FOOD_DELIVERY_DB = "fluss";
+    public static final String FOOD_DELIVERY_DB = "food_delivery_db";
 
     public static final String COURIER_LOCATION_TBL = "courier_locations";
     public static final String DELIVERY_ETA_TBL = "delivery_eta_events";
