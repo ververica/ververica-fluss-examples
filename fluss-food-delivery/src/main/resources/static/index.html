@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Delivery Payment Monitor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Food Delivery Payment Monitor</h1>
+            <p>Real-time payment information from the food delivery system</p>
+        </header>
+        
+        <main>
+            <div class="status-bar">
+                <div id="connection-status">Connecting...</div>
+                <div id="record-count">Records: 0</div>
+            </div>
+            
+            <div class="data-container">
+                <table id="payment-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Total Amount</th>
+                            <th>Payment Method</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody id="payment-data">
+                        <!-- Data will be inserted here by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+        
+        <footer>
+            <p>Powered by Ververica Fluss</p>
+        </footer>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
