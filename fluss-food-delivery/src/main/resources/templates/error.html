@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        .error-container {
+            background-color: #f8d7da;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-left: 5px solid #dc3545;
+        }
+        .error-container h2 {
+            color: #721c24;
+            margin-top: 0;
+        }
+        .error-message {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .back-link:hover {
+            background-color: #0069d9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Error</h1>
+        
+        <div class="error-container">
+            <h2>Something went wrong</h2>
+            <div class="error-message" th:text="${error}">Error message will be displayed here</div>
+            <p>Please check the courier ID and try again.</p>
+        </div>
+        
+        <a href="/" class="back-link">Back to Home</a>
+    </div>
+</body>
+</html>

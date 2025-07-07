@@ -5,13 +5,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const barChartCanvas = document.getElementById('bar-chart');
     const lineChartCanvas = document.getElementById('line-chart');
 
-    // Track the number of records received
     let recordsReceived = 0;
 
-    // Data structures for charts
     const paymentMethods = ['Credit Card', 'PayPal', 'Revolut', 'Apple Pay'];
     const colors = ['#0a2342', '#1d3557', '#4d7ea8', '#a3c1e6'];
-    
+
     // Data for bar chart - total amount per payment method
     const totalAmountData = {
         'Credit Card': 0,
@@ -20,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
         'Apple Pay': 0
     };
 
-    // Data for line chart - average price per payment method
     const averagePriceData = {
         labels: [],
         datasets: paymentMethods.map((method, index) => ({
@@ -48,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
         data: {
             labels: paymentMethods,
             datasets: [{
-                label: 'Total Amount ($)',
+                label: 'Total Amount (€)',
                 data: paymentMethods.map(method => totalAmountData[method]),
                 backgroundColor: colors,
                 borderColor: colors.map(color => color + '80'),
@@ -63,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     beginAtZero: true,
                     ticks: {
                         callback: function(value) {
-                            return '$' + value;
+                            return '€' + value;
                         }
                     }
                 }
@@ -75,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 tooltip: {
                     callbacks: {
                         label: function(context) {
-                            return '$' + context.raw.toFixed(2);
+                            return '€' + context.raw.toFixed(2);
                         }
                     }
                 }
@@ -95,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     beginAtZero: true,
                     ticks: {
                         callback: function(value) {
-                            return '$' + value;
+                            return '€' + value;
                         }
                     }
                 }
@@ -104,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 tooltip: {
                     callbacks: {
                         label: function(context) {
-                            return context.dataset.label + ': $' + context.raw.toFixed(2);
+                            return context.dataset.label + ': €' + context.raw.toFixed(2);
                         }
                     }
                 }
@@ -112,7 +109,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Function to update the bar chart
     const updateBarChart = () => {
         barChart.data.datasets[0].data = paymentMethods.map(method => totalAmountData[method]);
         barChart.update();
@@ -126,73 +122,60 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Function to calculate and update the line chart every 10 seconds
     const updateLineChart = () => {
         const now = new Date();
         const timeLabel = now.toLocaleTimeString();
-        
-        // Add new time label
+
         averagePriceData.labels.push(timeLabel);
-        
-        // Calculate averages for each payment method
+
         paymentMethods.forEach((method, index) => {
             const methodData = intervalData[method];
             const average = methodData.count > 0 ? methodData.total / methodData.count : 0;
-            
-            // Add the average to the dataset
+
             averagePriceData.datasets[index].data.push(average);
-            
-            // Reset the interval data
+
             methodData.count = 0;
             methodData.total = 0;
         });
-        
-        // Keep only the last 10 data points to avoid cluttering
-        if (averagePriceData.labels.length > 10) {
+
+        if (averagePriceData.labels.length > 60) {
             averagePriceData.labels.shift();
             averagePriceData.datasets.forEach(dataset => {
                 dataset.data.shift();
             });
         }
-        
-        // Update the chart
+
         lineChart.update();
-        
-        // Update the timestamp
+
         intervalData.timestamp = now;
     };
 
-    // Set up interval for updating the line chart (every 10 seconds)
-    setInterval(updateLineChart, 10000);
+    setInterval(updateLineChart, 1000);
 
-    // Function to connect to the SSE endpoint
     const connectToSSE = () => {
         connectionStatus.textContent = 'Connecting...';
         connectionStatus.className = '';
 
-        // Create a new EventSource connection to the SSE endpoint
         const eventSource = new EventSource('http://localhost:8080/api/payments');
 
-        // Handle connection open
         eventSource.onopen = () => {
             connectionStatus.textContent = 'Connected';
             connectionStatus.className = 'connected';
         };
 
-        // Handle incoming messages
         eventSource.onmessage = (event) => {
             try {
                 const payment = JSON.parse(event.data);
-                
+
                 // Update total amount data
                 if (totalAmountData[payment.paymentMethod] !== undefined) {
                     totalAmountData[payment.paymentMethod] += payment.totalAmount;
                     updateBarChart();
                 }
-                
+
                 // Update interval data for line chart
                 updateIntervalData(payment);
-                
+
                 // Update record count
                 recordsReceived++;
                 recordCount.textContent = `Records: ${recordsReceived}`;
@@ -201,7 +184,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        // Handle errors
         eventSource.onerror = () => {
             connectionStatus.textContent = 'Disconnected - Reconnecting...';
             connectionStatus.className = 'disconnected';

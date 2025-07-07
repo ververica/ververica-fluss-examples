@@ -6,15 +6,12 @@ import com.alibaba.fluss.client.table.Table;
 import com.alibaba.fluss.client.table.scanner.ScanRecord;
 import com.alibaba.fluss.client.table.scanner.log.LogScanner;
 import com.alibaba.fluss.client.table.scanner.log.ScanRecords;
-import com.alibaba.fluss.client.table.writer.UpsertWriter;
 import com.alibaba.fluss.config.ConfigOptions;
 import com.alibaba.fluss.config.Configuration;
 import com.alibaba.fluss.metadata.TableBucket;
 import com.alibaba.fluss.metadata.TablePath;
-import com.alibaba.fluss.row.GenericRow;
 import com.alibaba.fluss.row.InternalRow;
 import com.ververica.utils.AppUtils;
-import com.ververica.utils.DataGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.ververica.models.FoodDeliveryDomain.OrderPaymentInfo;
@@ -22,6 +19,7 @@ import com.ververica.models.FoodDeliveryDomain.OrderPaymentInfo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,6 +35,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 @SpringBootApplication
+@ComponentScan(basePackages = {"com.ververica"})
 public class FoodDeliveryScanner {
     private static final Logger logger = LoggerFactory.getLogger(FoodDeliveryScanner.class);
     private static final Sinks.Many<OrderPaymentInfoPartial> sink = Sinks.many().multicast().onBackpressureBuffer();
@@ -76,14 +75,19 @@ public class FoodDeliveryScanner {
             }
 
             while (true) {
-                logger.info("Polling for records ...");
+//                logger.info("Polling for records ...");
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 ScanRecords scanRecords = logScanner.poll(Duration.ofSeconds(1));
                 for (TableBucket bucket: scanRecords.buckets()) {
                     for (ScanRecord record: scanRecords.records(bucket)) {
                         InternalRow row = record.getRow();
                         OrderPaymentInfoPartial orderPaymentInfoPartial
                                 = new OrderPaymentInfoPartial(row.getString(0).toString(), row.getDouble(1), row.getString(2).toString());
-                        logger.info("Bucket: {} - {}", bucket, orderPaymentInfoPartial);
+//                        logger.info("Bucket: {} - {}", bucket, orderPaymentInfoPartial);
                         sink.tryEmitNext(orderPaymentInfoPartial);
                     }
                 }
@@ -94,7 +98,8 @@ public class FoodDeliveryScanner {
     @RestController
     public static class OrderPaymentController {
         @GetMapping(path = "/api/payments", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-        public Flux<OrderPaymentInfoPartial> getPaymentStream() {
+        public Flux<OrderPaymentInfoPartial> getPaymentStream() throws InterruptedException {
+            Thread.sleep(1000);
             return flux;
         }
     }

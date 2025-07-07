@@ -199,7 +199,38 @@ footer p {
     border-radius: 8px 8px 0 0;
 }
 
+/* Navigation Links */
+.view-link {
+    color: #a3c1e6;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.view-link:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* Chart Styles */
+.chart-title {
+    padding: 15px 20px;
+    background-color: #0a2342;
+    color: white;
+    margin: 0;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.chart-container {
+    padding: 20px;
+    height: 300px;
+}
+
+.chart-section {
+    margin-top: 30px;
+}
+
 /* Smooth transitions */
-th, td, #connection-status, #record-count, .status-bar, header, footer {
+th, td, #connection-status, #record-count, .status-bar, header, footer, .view-link {
     transition: all 0.3s ease;
 }

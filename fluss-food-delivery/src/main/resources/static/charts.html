@@ -14,34 +14,34 @@
             <h1>Food Delivery Payment Charts</h1>
             <p>Visual analytics of payment data from the food delivery system</p>
         </header>
-        
+
         <main>
             <div class="status-bar">
                 <div id="connection-status">Connecting...</div>
                 <div id="record-count">Records: 0</div>
-                <div><a href="index.html" style="color: #a3c1e6; text-decoration: none;">View Table Data</a></div>
+                <div><a href="index.html" class="view-link">View Table Data</a></div>
             </div>
-            
+
             <div class="data-container">
-                <h2 style="padding: 15px 20px; background-color: #0a2342; color: white; margin: 0;">Total Amount per Payment Method</h2>
-                <div style="padding: 20px; height: 300px;">
+                <h2 class="chart-title">Total Amount per Payment Method</h2>
+                <div class="chart-container">
                     <canvas id="bar-chart"></canvas>
                 </div>
             </div>
-            
-            <div class="data-container" style="margin-top: 30px;">
-                <h2 style="padding: 15px 20px; background-color: #0a2342; color: white; margin: 0;">Average Price per Payment Method (10s intervals)</h2>
-                <div style="padding: 20px; height: 300px;">
+
+            <div class="data-container chart-section">
+                <h2 class="chart-title">Average Price per Payment Method (1s intervals)</h2>
+                <div class="chart-container">
                     <canvas id="line-chart"></canvas>
                 </div>
             </div>
         </main>
-        
+
         <footer>
-            <p>Powered by Ververica Fluss</p>
+            <p>Powered by Ververica</p>
         </footer>
     </div>
-    
+
     <script src="charts.js"></script>
 </body>
 </html>

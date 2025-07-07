@@ -11,20 +11,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const formatCurrency = (amount) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
-            currency: 'USD'
+            currency: 'EUR'
         }).format(amount);
     };
 
     // Function to add a new payment record to the table
     const addPaymentRecord = (payment) => {
-        // Create a new row
         const row = document.createElement('tr');
         row.className = 'new-record';
 
-        // Create timestamp
         const timestamp = new Date().toLocaleTimeString();
 
-        // Set the row content
         row.innerHTML = `
             <td>${payment.orderId}</td>
             <td>${formatCurrency(payment.totalAmount)}</td>
@@ -32,20 +29,17 @@ document.addEventListener('DOMContentLoaded', () => {
             <td>${timestamp}</td>
         `;
 
-        // Add the row to the table (at the beginning)
         if (paymentData.firstChild) {
             paymentData.insertBefore(row, paymentData.firstChild);
         } else {
             paymentData.appendChild(row);
         }
 
-        // Limit the number of visible rows to prevent performance issues
         const maxRows = 100;
         while (paymentData.children.length > maxRows) {
             paymentData.removeChild(paymentData.lastChild);
         }
 
-        // Update the record count
         recordsReceived++;
         recordCount.textContent = `Records: ${recordsReceived}`;
     };
@@ -58,13 +52,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Create a new EventSource connection to the SSE endpoint
         const eventSource = new EventSource('http://localhost:8080/api/payments');
 
-        // Handle connection open
         eventSource.onopen = () => {
             connectionStatus.textContent = 'Connected';
             connectionStatus.className = 'connected';
         };
 
-        // Handle incoming messages
         eventSource.onmessage = (event) => {
             try {
                 const payment = JSON.parse(event.data);
@@ -74,19 +66,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        // Handle errors
         eventSource.onerror = () => {
             connectionStatus.textContent = 'Disconnected - Reconnecting...';
             connectionStatus.className = 'disconnected';
 
-            // Close the current connection
             eventSource.close();
 
-            // Try to reconnect after a delay
             setTimeout(connectToSSE, 5000);
         };
     };
 
-    // Start the SSE connection
     connectToSSE();
 });
