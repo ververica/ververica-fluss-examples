@@ -1,20 +1,9 @@
 # Food Delivery Application
 
-## Overview Page
 <p align="center">
     <img src="assets/overview.png">
 </p>
 
-
-## Charts Page
-<p align="center">
-    <img src="assets/charts.png">
-</p>
-
-## Location Page
-<p align="center">
-    <img src="assets/location.png">
-</p>
 
 This document provides instructions on how to run the Food Delivery application and access its endpoints.
 
@@ -86,3 +75,13 @@ The system uses the following technologies:
 - Flink for stream processing
 - Paimon for data storage
 - ZooKeeper for coordination
+
+## Charts Page
+<p align="center">
+    <img src="assets/charts.png">
+</p>
+
+## Location Page
+<p align="center">
+    <img src="assets/location.png">
+</p>
