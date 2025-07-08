@@ -1,5 +1,21 @@
 # Food Delivery Application
 
+## Overview Page
+<p align="center">
+    <img src="assets/overview.png">
+</p>
+
+
+## Charts Page
+<p align="center">
+    <img src="assets/charts.png">
+</p>
+
+## Location Page
+<p align="center">
+    <img src="assets/location.png">
+</p>
+
 This document provides instructions on how to run the Food Delivery application and access its endpoints.
 
 ## Running the Application
