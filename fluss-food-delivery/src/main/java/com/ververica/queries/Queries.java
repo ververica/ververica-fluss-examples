@@ -1,4 +1,4 @@
-package com.ververica;
+package com.ververica.queries;
 
 import com.ververica.utils.AppUtils;
 

@@ -31,31 +31,6 @@ public class FoodDeliveryWriter {
         conf.setString(ConfigOptions.BOOTSTRAP_SERVERS.key(), AppUtils.BOOTSTRAP_SERVERS);
         Connection connection = ConnectionFactory.createConnection(conf);
 
-        Admin admin = connection.getAdmin();
-
-
-        DatabaseDescriptor descriptor =
-                DatabaseDescriptor.builder()
-                        .comment("This is the food delivery database")
-                        .customProperty("owner", "JE")
-                        .build();
-
-        admin.createDatabase(AppUtils.FOOD_DELIVERY_DB, descriptor, true).get();
-        admin.listDatabases().get().forEach(System.out::println);
-        logger.info("Tables in '{}' database:", AppUtils.FOOD_DELIVERY_DB);
-        admin.listTables(AppUtils.FOOD_DELIVERY_DB).get()
-                .forEach(tbl -> {   logger.info("\t{}", tbl);   });
-
-        admin.createTable(DeliveryETAEvent.tablePath(), DeliveryETAEvent.getDescriptor(), true).get();
-        admin.createTable(RestaurantPrepStatus.tablePath(), RestaurantPrepStatus.getDescriptor(), true).get();
-        admin.createTable(CourierLocationUpdate.tablePath(), CourierLocationUpdate.getDescriptor(), true).get();
-        admin.createTable(OrderPaymentInfo.tablePath(), OrderPaymentInfo.getDescriptor(), true).get();
-
-        logger.info("Tables in '{}' database:", AppUtils.FOOD_DELIVERY_DB);
-        admin.listTables(AppUtils.FOOD_DELIVERY_DB).get()
-                .forEach(tbl -> {   logger.info("\t{}", tbl);   });
-
-        // Create a writer
         Table table = connection.getTable(DeliveryETAEvent.tablePath());
         AppendWriter writer = table.newAppend().createWriter();
 

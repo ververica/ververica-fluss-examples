@@ -1,4 +1,4 @@
-package com.ververica;
+package com.ververica.lookup;
 
 import com.alibaba.fluss.client.Connection;
 import com.alibaba.fluss.client.ConnectionFactory;
@@ -19,8 +19,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.ExecutionException;
 
-public class Lookup {
-    private static final Logger logger = LoggerFactory.getLogger(Lookup.class);
+public class CourierLookup {
+    private static final Logger logger = LoggerFactory.getLogger(CourierLookup.class);
     private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {

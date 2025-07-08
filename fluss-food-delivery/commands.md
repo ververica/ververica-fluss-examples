@@ -1,6 +1,6 @@
 ```shell
 SET 'sql-client.execution.result-mode' = 'tableau';
-SET 'parallelism.default' = '3';
+SET 'parallelism.default' = '1';
 ```
 
 ```sql
@@ -99,17 +99,24 @@ SET 'execution.runtime-mode' = 'batch';
 ```
 
 ```sql
-UPDATE order_payment_info SET totalAmount=95.0 WHERE orderId='1000424';
+SELECT * FROM order_payment_info LIMIT 10;
+UPDATE order_payment_info SET totalAmount=95.0 WHERE orderId='100002';
 
-SELECT * FROM order_payment_info WHERE orderId='1000424';
+SELECT * FROM order_payment_info WHERE orderId='100002';
 
 SELECT * FROM restaurant_prep_status LIMIT 10;
 SELECT * FROM restaurant_prep_status WHERE restaurantId='10';
 DELETE FROM restaurant_prep_status WHERE restaurantId='10';
-
 ```
 
-
+```shell
+/opt/flink/bin/flink run -D parallelism.default=2 \
+    /opt/flink/opt/fluss-flink-tiering-0.7.0.jar \
+    --fluss.bootstrap.servers coordinator-server:3808 \
+    --datalake.format paimon \
+    --datalake.paimon.metastore filesystem \
+    --datalake.paimon.warehouse /tmp/paimon
+```
 
 
 

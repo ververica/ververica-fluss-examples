@@ -113,7 +113,8 @@ services:
         FLINK_PROPERTIES=
         jobmanager.rpc.address: jobmanager
         taskmanager.numberOfTaskSlots: 10
-        taskmanager.memory.process.size: 2048m
+        taskmanager.memory.process.size: 4096m
+        taskmanager.memory.managed.size: 256m
         taskmanager.memory.framework.off-heap.size: 256m
     volumes:
       - shared-tmpfs:/tmp/paimon
