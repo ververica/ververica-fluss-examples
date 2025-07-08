@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Delivery Payment Charts</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Include Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Food Delivery Payment Charts</h1>
+            <p>Visual analytics of payment data from the food delivery system</p>
+        </header>
+
+        <main>
+            <div class="status-bar">
+                <div id="connection-status">Connecting...</div>
+                <div id="record-count">Records: 0</div>
+                <div><a href="index.html" class="view-link">View Table Data</a></div>
+            </div>
+
+            <div class="data-container">
+                <h2 class="chart-title">Total Amount per Payment Method</h2>
+                <div class="chart-container">
+                    <canvas id="bar-chart"></canvas>
+                </div>
+            </div>
+
+            <div class="data-container chart-section">
+                <h2 class="chart-title">Average Price per Payment Method (1s intervals)</h2>
+                <div class="chart-container">
+                    <canvas id="line-chart"></canvas>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Powered by Ververica</p>
+        </footer>
+    </div>
+
+    <script src="charts.js"></script>
+</body>
+</html>
