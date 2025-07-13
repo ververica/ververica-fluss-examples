@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let recordsReceived = 0;
 
     const paymentMethods = ['Credit Card', 'PayPal', 'Revolut', 'Apple Pay'];
-    const colors = ['#0a2342', '#1d3557', '#4d7ea8', '#a3c1e6'];
+    const colors = ['#0a192f', '#172a45', '#303c55', '#64ffda']; // --navy-dark, --navy-medium, --navy-light, --accent-blue
 
     // Data for bar chart - total amount per payment method
     const totalAmountData = {
