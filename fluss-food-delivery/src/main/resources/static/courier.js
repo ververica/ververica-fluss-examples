@@ -27,7 +27,7 @@ function updateCourierInfo(updatedCourier) {
 function updateMap(updatedCourier) {
     const mapContainer = document.getElementById('map');
     mapContainer.innerHTML = `
-        <div style="background-color: #172a45; height: 100%; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: #e6f1ff;">
+        <div style="background-color: #3aa89f; height: 100%; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: #0a192f; font-weight: bold;">
             <p>Map showing courier location at coordinates: ${updatedCourier.courierLatitude}, ${updatedCourier.courierLongitude}</p>
         </div>
     `;
