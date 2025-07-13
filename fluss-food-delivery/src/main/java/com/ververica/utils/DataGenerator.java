@@ -21,7 +21,7 @@ public class DataGenerator {
     private static final Faker faker = new Faker();
 
 
-    private static final int totalCouriers = 100_000;
+    private static final int totalCouriers = 1000;
     private static final int totalRestaurants = 10_000;
     private static final AtomicInteger totalOrders = new AtomicInteger(1001);
 
