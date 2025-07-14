@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let recordsReceived = 0;
 
     const paymentMethods = ['Credit Card', 'PayPal', 'Revolut', 'Apple Pay'];
-    const colors = ['#d63031', '#2c9d94', '#e67e22', '#2ecc71']; // darker-red, darker-teal, darker-orange, darker-green
+    const colors = ['#8b0000', '#b8860b', '#2980b9', '#9c27b0']; // darker-red, dark-yellow, blue, bright-purple
 
     // Data for bar chart - total amount per payment method
     const totalAmountData = {
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
             label: method,
             data: [],
             borderColor: colors[index],
-            backgroundColor: colors[index] + '20',
+            backgroundColor: colors[index] + '40',
             tension: 0.3,
             fill: false
         }))
@@ -61,7 +61,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     ticks: {
                         callback: function(value) {
                             return '€' + value;
-                        }
+                        },
+                        color: '#e6f1ff'
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: '#e6f1ff'
                     }
                 }
             },
@@ -93,7 +99,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     ticks: {
                         callback: function(value) {
                             return '€' + value;
-                        }
+                        },
+                        color: '#e6f1ff'
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: '#e6f1ff'
                     }
                 }
             },
