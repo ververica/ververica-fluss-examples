@@ -49,17 +49,27 @@ Once the application is running, you can access it through the following endpoin
 
 ### API Endpoints
 
-- **Payment Stream**: http://localhost:8080/api/payments
+- **Payment Stream**: `GET http://localhost:8080/api/payments`
   - Returns a stream of order payment data in Server-Sent Events (SSE) format.
   - Used by the web UI to display real-time payment information.
+  - Content-Type: text/event-stream
 
-- **Courier Information**: http://localhost:8080/api/courier/{id}
+- **Courier Information**: `GET http://localhost:8080/api/courier/{id}`
   - Returns information about a specific courier in JSON format.
   - Replace `{id}` with the actual courier ID.
+  - Returns HTTP 404 if the courier is not found.
 
-- **Courier Page**: http://localhost:8080/courier/{id}
+- **Courier Stream**: `GET http://localhost:8080/api/courier/{id}/stream`
+  - Returns a stream of real-time updates for a specific courier in Server-Sent Events (SSE) format.
+  - Replace `{id}` with the actual courier ID.
+  - Used by the courier page to display real-time location and status updates.
+  - Content-Type: text/event-stream
+
+- **Courier Page**: `GET http://localhost:8080/courier/{id}`
   - Returns an HTML page with information about a specific courier.
   - Replace `{id}` with the actual courier ID.
+  - Displays a map with the courier's location and other details.
+  - Returns an error page if the courier is not found.
 
 ## System Architecture
 

@@ -1,3 +1,17 @@
+/* Color Variables */
+:root {
+    --navy-dark: #0a192f;
+    --navy-medium: #172a45;
+    --navy-light: #303c55;
+    --navy-lightest: #4a5568;
+    --accent-blue: #64ffda;
+    --text-primary: #e6f1ff;
+    --text-secondary: #a8b2d1;
+    --text-tertiary: #8892b0;
+    --success-green: #4caf50;
+    --danger-red: #f44336;
+}
+
 /* General Styles */
 * {
     box-sizing: border-box;
@@ -8,9 +22,8 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    color: #e6e6e6;
-    background-color: #f0f4f8;
-    background-image: linear-gradient(to bottom, #f0f4f8, #e1e8ed);
+    color: var(--text-primary);
+    background-color: var(--navy-dark);
     min-height: 100vh;
 }
 
@@ -25,21 +38,21 @@ header {
     text-align: center;
     margin-bottom: 30px;
     padding: 20px;
-    background-color: #0a2342; /* Dark navy blue */
+    background-color: var(--navy-medium);
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    color: #ffffff;
+    color: var(--text-primary);
 }
 
 header h1 {
-    color: #ffffff;
+    color: var(--accent-blue);
     margin-bottom: 10px;
     font-weight: 600;
     letter-spacing: 0.5px;
 }
 
 header p {
-    color: #a3c1e6; /* Light blue accent */
+    color: var(--text-secondary);
     font-size: 1.1em;
 }
 
@@ -49,33 +62,33 @@ header p {
     justify-content: space-between;
     margin-bottom: 20px;
     padding: 12px 20px;
-    background-color: #1d3557; /* Medium navy blue */
+    background-color: var(--navy-light);
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    color: #ffffff;
+    color: var(--text-primary);
 }
 
 #connection-status {
     padding: 6px 12px;
     border-radius: 4px;
     background-color: #f1a940; /* Amber for connecting */
-    color: #0a2342; /* Dark text for better contrast */
+    color: var(--navy-dark);
     font-weight: 500;
     transition: background-color 0.3s ease;
 }
 
 #connection-status.connected {
-    background-color: #4cc9b0; /* Teal for connected */
+    background-color: var(--success-green);
 }
 
 #connection-status.disconnected {
-    background-color: #e63946; /* Red for disconnected */
-    color: white;
+    background-color: var(--danger-red);
+    color: var(--text-primary);
 }
 
 #record-count {
     font-weight: 600;
-    color: #a3c1e6; /* Light blue accent */
+    color: var(--text-secondary);
     padding: 6px 12px;
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 4px;
@@ -83,12 +96,12 @@ header p {
 
 /* Table Styles */
 .data-container {
-    background-color: #ffffff;
+    background-color: var(--navy-medium);
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
     overflow: hidden;
     margin-bottom: 30px;
-    border: 1px solid rgba(10, 35, 66, 0.1);
+    border: 1px solid var(--navy-light);
 }
 
 table {
@@ -97,8 +110,8 @@ table {
 }
 
 thead {
-    background-color: #0a2342; /* Dark navy blue */
-    color: white;
+    background-color: var(--navy-dark);
+    color: var(--accent-blue);
 }
 
 th {
@@ -106,22 +119,22 @@ th {
     text-align: left;
     font-weight: 600;
     letter-spacing: 0.5px;
-    border-bottom: 2px solid #1d3557; /* Medium navy blue */
+    border-bottom: 2px solid var(--accent-blue);
 }
 
 td {
     padding: 14px 20px;
     text-align: left;
-    border-bottom: 1px solid #e1e8ed;
-    color: #2c3e50; /* Dark slate for text */
+    border-bottom: 1px solid var(--navy-light);
+    color: var(--text-primary);
 }
 
 tbody tr:nth-child(even) {
-    background-color: #ffffff; /* White background for even rows */
+    background-color: var(--navy-light);
 }
 
 tbody tr:hover {
-    background-color: #f9f9f9; /* Very light gray on hover */
+    background-color: var(--navy-lightest);
 }
 
 /* New Record Animation */
@@ -131,7 +144,7 @@ tbody tr:hover {
 
 @keyframes highlight {
     0% {
-        background-color: rgba(240, 240, 240, 0.7); /* Very light gray highlight */
+        background-color: rgba(100, 255, 218, 0.1); /* Accent blue highlight */
     }
     100% {
         background-color: transparent;
@@ -142,8 +155,8 @@ tbody tr:hover {
 footer {
     text-align: center;
     padding: 20px;
-    color: #a3c1e6; /* Light blue accent */
-    background-color: #0a2342; /* Dark navy blue */
+    color: var(--text-secondary);
+    background-color: var(--navy-medium);
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     margin-top: 20px;
@@ -195,27 +208,27 @@ footer p {
     left: 0;
     width: 100%;
     height: 5px;
-    background: linear-gradient(to right, #0a2342, #1d3557, #4d7ea8);
+    background: linear-gradient(to right, var(--navy-dark), var(--navy-medium), var(--accent-blue));
     border-radius: 8px 8px 0 0;
 }
 
 /* Navigation Links */
 .view-link {
-    color: #a3c1e6;
+    color: var(--accent-blue);
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 .view-link:hover {
-    color: #ffffff;
+    color: var(--text-primary);
     text-decoration: underline;
 }
 
 /* Chart Styles */
 .chart-title {
     padding: 15px 20px;
-    background-color: #0a2342;
-    color: white;
+    background-color: var(--navy-dark);
+    color: var(--accent-blue);
     margin: 0;
     font-weight: 600;
     letter-spacing: 0.5px;
@@ -230,7 +243,81 @@ footer p {
     margin-top: 30px;
 }
 
+/* Courier Lookup Styles */
+.courier-lookup {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#courier-id {
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: 1px solid var(--navy-lightest);
+    background-color: var(--navy-dark);
+    color: var(--text-primary);
+    font-size: 0.9em;
+    width: 150px;
+}
+
+#lookup-courier {
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: none;
+    background-color: var(--accent-blue);
+    color: var(--navy-dark);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#lookup-courier:hover {
+    background-color: #7cffde;
+}
+
+/* Responsive styles for courier lookup */
+@media (max-width: 768px) {
+    .courier-lookup {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    #courier-id {
+        width: 100%;
+    }
+
+    #lookup-courier {
+        width: 100%;
+    }
+}
+
+/* Back Button Styles */
+.back-button {
+    padding: 6px 12px;
+    border-radius: 4px;
+    background-color: var(--accent-blue);
+    color: var(--navy-dark);
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+}
+
+.back-button:hover {
+    background-color: #7cffde;
+    text-decoration: none;
+}
+
+/* Responsive styles for back button */
+@media (max-width: 768px) {
+    .back-button {
+        width: 100%;
+        text-align: center;
+    }
+}
+
 /* Smooth transitions */
-th, td, #connection-status, #record-count, .status-bar, header, footer, .view-link {
+th, td, #connection-status, #record-count, .status-bar, header, footer, .view-link, #courier-id, #lookup-courier, .back-button {
     transition: all 0.3s ease;
 }

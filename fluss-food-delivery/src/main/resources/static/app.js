@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const connectionStatus = document.getElementById('connection-status');
     const recordCount = document.getElementById('record-count');
     const paymentData = document.getElementById('payment-data');
+    const courierIdInput = document.getElementById('courier-id');
+    const lookupCourierButton = document.getElementById('lookup-courier');
 
     // Track the number of records received
     let recordsReceived = 0;
@@ -77,4 +79,24 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     connectToSSE();
+
+    // Function to handle courier lookup
+    const handleCourierLookup = () => {
+        const courierId = courierIdInput.value.trim();
+        if (courierId) {
+            window.location.href = `/courier/${courierId}`;
+        } else {
+            alert('Please enter a Courier ID');
+        }
+    };
+
+    // Add event listener for courier lookup button
+    lookupCourierButton.addEventListener('click', handleCourierLookup);
+
+    // Add event listener for Enter key in the input field
+    courierIdInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            handleCourierLookup();
+        }
+    });
 });
