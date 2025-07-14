@@ -39,48 +39,28 @@ public class DataGenerator {
     }
 
     /**
-     * Generates a random payment method with realistic distribution:
-     * - Credit Card: ~50% (most common payment method)
-     * - Apple Pay: ~30% (popular mobile payment)
-     * - PayPal: ~15% (common online payment)
-     * - Revolut: ~5% (less common)
-     * @return a random implementation of PaymentMethod with realistic distribution
+     * Generates a random payment method.
+     * @return a random implementation of PaymentMethod
      */
     public static PaymentMethod generateRandomPaymentMethod() {
-        int randomValue = random.nextInt(100);
-
-
-        if (randomValue < 50) {
-            return new CreditCard(faker.business().creditCardNumber(), faker.name().fullName());
-        } else if (randomValue < 80) {
-            return new ApplePay(UUID.randomUUID().toString());
-        } else if (randomValue < 95) {
-            return new PayPal(faker.internet().emailAddress());
-        } else {
-            return new Revolut(UUID.randomUUID().toString());
-        }
+        int methodType = random.nextInt(4);
+        return switch (methodType) {
+            case 0 -> new CreditCard(faker.business().creditCardNumber(), faker.name().fullName());
+            case 1 -> new Revolut(UUID.randomUUID().toString());
+            case 2 -> new PayPal(faker.internet().emailAddress());
+            case 3 -> new ApplePay(UUID.randomUUID().toString());
+            default -> throw new IllegalStateException("Unexpected value: " + methodType);
+        };
     }
 
+    /**
+     * Generates a random order payment info.
+     * @return a random OrderPaymentInfo
+     */
     public static OrderPaymentInfo generateOrderPaymentInfo() {
-        int randomValue = random.nextInt(100);
-        double totalAmount;
-
-
-        if (randomValue < 70) {
-            totalAmount = faker.number().randomDouble(2, 15, 50);
-        }
-
-        else if (randomValue < 95) {
-            totalAmount = faker.number().randomDouble(2, 50, 80);
-        }
-
-        else {
-            totalAmount = faker.number().randomDouble(2, 80, 120);
-        }
-
         return new OrderPaymentInfo(
                 String.valueOf(random.nextInt(1000, totalOrders.get())),
-                totalAmount,
+                faker.number().randomDouble(2, 10, 100),
                 generateRandomPaymentMethod(),
                 random.nextBoolean(),
                 random.nextBoolean(),
@@ -111,12 +91,12 @@ public class DataGenerator {
     public static RestaurantPrepStatus generateRestaurantPrepStatus() {
         long estimatedPrepTime = faker.number().numberBetween(300, 1200); // 5-20 minutes in seconds
         long actualPrepTime = estimatedPrepTime + faker.number().numberBetween(-180, 300); // +/- 3-5 minutes variance
-        if (actualPrepTime < 120) actualPrepTime = 120;
+        if (actualPrepTime < 120) actualPrepTime = 120; // minimum 2 minutes
 
         return new RestaurantPrepStatus(
                 String.valueOf(random.nextInt(totalRestaurants)),
                 String.valueOf(random.nextInt(1000, totalOrders.get())),
-                faker.number().numberBetween(0, 15),
+                faker.number().numberBetween(0, 15), // current queue size
                 actualPrepTime,
                 estimatedPrepTime,
                 LocalDateTime.now()

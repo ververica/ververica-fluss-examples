@@ -243,7 +243,81 @@ footer p {
     margin-top: 30px;
 }
 
+/* Courier Lookup Styles */
+.courier-lookup {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#courier-id {
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: 1px solid var(--navy-lightest);
+    background-color: var(--navy-dark);
+    color: var(--text-primary);
+    font-size: 0.9em;
+    width: 150px;
+}
+
+#lookup-courier {
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: none;
+    background-color: var(--accent-blue);
+    color: var(--navy-dark);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#lookup-courier:hover {
+    background-color: #7cffde;
+}
+
+/* Responsive styles for courier lookup */
+@media (max-width: 768px) {
+    .courier-lookup {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    #courier-id {
+        width: 100%;
+    }
+
+    #lookup-courier {
+        width: 100%;
+    }
+}
+
+/* Back Button Styles */
+.back-button {
+    padding: 6px 12px;
+    border-radius: 4px;
+    background-color: var(--accent-blue);
+    color: var(--navy-dark);
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+}
+
+.back-button:hover {
+    background-color: #7cffde;
+    text-decoration: none;
+}
+
+/* Responsive styles for back button */
+@media (max-width: 768px) {
+    .back-button {
+        width: 100%;
+        text-align: center;
+    }
+}
+
 /* Smooth transitions */
-th, td, #connection-status, #record-count, .status-bar, header, footer, .view-link {
+th, td, #connection-status, #record-count, .status-bar, header, footer, .view-link, #courier-id, #lookup-courier, .back-button {
     transition: all 0.3s ease;
 }
