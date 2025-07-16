@@ -7,6 +7,11 @@
 
 This document provides instructions on how to run the Food Delivery application and access its endpoints.
 
+## High Level Architecture
+<p align="center">
+    <img src="assets/arch.png">
+</p>
+
 ## Running the Application
 
 ### Option 1: Running with Java
