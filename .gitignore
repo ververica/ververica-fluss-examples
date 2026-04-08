@@ -5,3 +5,6 @@ fluss-flink-playground.iml
 
 */target
 *.iml
+
+realtime_profiles/jars/fluss-flink-realtime-profile-0.1.0.jar
+realtime_profiles/dependency-reduced-pom.xml

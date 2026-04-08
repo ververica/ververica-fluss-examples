@@ -1,0 +1,97 @@
+services:
+  coordinator-server:
+    image: apache/fluss:0.9.0-incubating
+    command: coordinatorServer
+    depends_on:
+      - zookeeper
+    environment:
+      - |
+        FLUSS_PROPERTIES=
+        # --- Core cluster config ---
+        zookeeper.address: zookeeper:2181
+        bind.listeners: INTERNAL://0.0.0.0:3808,CLIENT://0.0.0.0:9123
+        advertised.listeners: INTERNAL://coordinator-server:3808,CLIENT://localhost:9123
+        internal.listener.name: INTERNAL
+        remote.data.dir: /tmp/fluss/remote-data
+
+  tablet-server-0:
+    image: apache/fluss:0.9.0-incubating
+    command: tabletServer
+    depends_on:
+      - coordinator-server
+    environment:
+      - |
+        FLUSS_PROPERTIES=
+        zookeeper.address: zookeeper:2181
+        bind.listeners: INTERNAL://tablet-server-0:0,CLIENT://tablet-server-0:9123
+        advertised.listeners: CLIENT://localhost:9124
+        internal.listener.name: INTERNAL
+        tablet-server.id: 0
+        kv.snapshot.interval: 0s
+        data.dir: /tmp/fluss/data/tablet-server-0
+        remote.data.dir: /tmp/fluss/remote-data
+
+  tablet-server-1:
+    image: apache/fluss:0.9.0-incubating
+    command: tabletServer
+    depends_on:
+      - coordinator-server
+    environment:
+      - |
+        FLUSS_PROPERTIES=
+        zookeeper.address: zookeeper:2181
+        bind.listeners: INTERNAL://tablet-server-1:0,CLIENT://tablet-server-1:9123
+        advertised.listeners: CLIENT://localhost:9125
+        internal.listener.name: INTERNAL
+        tablet-server.id: 1
+        kv.snapshot.interval: 0s
+        data.dir: /tmp/fluss/data/tablet-server-1
+        remote.data.dir: /tmp/fluss/remote-data
+  tablet-server-2:
+    image: apache/fluss:0.9.0-incubating
+    command: tabletServer
+    depends_on:
+      - coordinator-server
+    environment:
+      - |
+        FLUSS_PROPERTIES=
+        zookeeper.address: zookeeper:2181
+        bind.listeners: INTERNAL://tablet-server-2:0,CLIENT://tablet-server-2:9123
+        advertised.listeners: CLIENT://localhost:9126
+        internal.listener.name: INTERNAL
+        tablet-server.id: 2
+        kv.snapshot.interval: 0s
+        data.dir: /tmp/fluss/data/tablet-server-2
+        remote.data.dir: /tmp/fluss/remote-data
+
+  zookeeper:
+    restart: always
+    image: zookeeper:3.9.2
+
+  jobmanager:
+    build: .
+    command: jobmanager
+    ports:
+      - "8083:8081"
+    volumes:
+      - ./jars:/opt/flink/jars
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+
+  taskmanager:
+    build: .
+    depends_on: [jobmanager]
+    command: taskmanager
+    volumes:
+      - ./jars:/opt/flink/jars
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        taskmanager.numberOfTaskSlots: 10
+        taskmanager.memory.process.size: 4096m
+        taskmanager.memory.managed.size: 256m
+        taskmanager.memory.framework.off-heap.size: 256m
+
