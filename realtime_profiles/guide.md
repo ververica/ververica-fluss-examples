@@ -9,7 +9,6 @@ The profile maintains flags per client: whether they transacted in a high-risk j
 All tables in this example live in Fluss. No external message broker is required. Register the Fluss catalog once per Flink SQL session:
 ```shell
 SET 'sql-client.execution.result-mode' = 'tableau';
-SET 'execution.runtime-mode' = 'batch';
 ```
 
 ```sql
