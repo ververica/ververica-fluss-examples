@@ -226,7 +226,7 @@ Flink SQL> SELECT * FROM enriched_transactions;
 | +I |                        ACC-001 |                    1 |                    CP-IBAN-012 |                    3 |                             DE |                           sepa |               230.00 |                          debit | 2026-03-15 10:11:00.000 |
 | +I |                        ACC-002 |               200001 |                    CP-IBAN-002 |               100001 |                             DE |                           sepa |               300.00 |                         credit | 2026-03-15 10:15:00.000 |
 ```
-The job writes one enriched row per input event to the Fluss log table, with both account and counterparty resolved to their `BIGINT` identifiers. The non-contiguous integers (1, 11, 21, 5, 25, …) reflect 3-bucket allocation — each entity was inserted by the lookup join into the bucket determined by hashing its primary key. The string identifiers are retained for audit but do not participate in the downstream bitmap operations.
+The job writes one enriched row per input event to the Fluss log table, with both account and counterparty resolved to their `BIGINT` identifiers. The non-contiguous integers reflect 3-bucket allocation; each entity was inserted by the lookup join into the bucket determined by hashing its primary key. The string identifiers are retained for audit but do not participate in the downstream bitmap operations.
 
 ### Step 5: The risk groups table (Aggregation Merge Engine)
 
