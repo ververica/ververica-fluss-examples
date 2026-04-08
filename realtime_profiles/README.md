@@ -1,4 +1,4 @@
-# Fluss + Flink: Real-time Client Risk Profile
+# Fluss & Flink: Real-time Client Risk Profile
 
 A Flink SQL environment backed by [Apache Fluss](https://fluss.apache.org/) for real-time profile
 aggregation using [Roaring64Bitmap](https://roaringbitmap.org/) UDFs. The example builds a
