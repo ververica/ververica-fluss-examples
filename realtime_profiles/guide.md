@@ -1,6 +1,8 @@
 ## A complete worked example: real-time client risk profile
 
-We will build a client risk profile that a fraud or AML system can query inline during transaction processing. The profile maintains flags per client: whether they transacted in a high-risk jurisdiction recently, whether they have high counterparty velocity, and whether they have been flagged for review.
+We will build a client risk profile that a fraud or AML system can query inline during transaction processing. 
+
+The profile maintains flags per client: whether they transacted in a high-risk jurisdiction recently, whether they have high counterparty velocity, and whether they have been flagged for review.
 
 ### Step 1: Register the Fluss catalog
 
